@@ -5,7 +5,7 @@ public class AI : MonoBehaviour
 {
     private GameObject player;
     private Animator animator;
-    private float maxDistanceToCheck = 6.0f;
+    private float maxDistanceToCheck = 15.0f;
     private float currentDistance;
     private Vector3 checkDirection;
     private int currentTarget;
@@ -18,10 +18,7 @@ public class AI : MonoBehaviour
     // Patrol state variables
     public Transform pointA;
     public Transform pointB;
-    //public Transform pointC;
-    //public Transform pointD;
-    //public Transform pointE;
-    //public Transform pointF;
+    public Transform bullet;
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
 
     public int AmountOfAmmo
@@ -33,7 +30,14 @@ public class AI : MonoBehaviour
         set
         {
             _amountOfAmmo = value;
-        }
+        }      
+    }
+
+    public void Fire()
+    {
+        transform.LookAt(player.transform);
+        Vector3 shootDirection = Vector3.Normalize(checkDirection);
+        Instantiate(bullet, transform.position, Quaternion.LookRotation(shootDirection));
     }
 
     private void Start()
@@ -42,20 +46,11 @@ public class AI : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         pointA = GameObject.Find("p1").transform;
         pointB = GameObject.Find("p2").transform;
-        //pointC = GameObject.Find("p3").transform;
-        //pointD = GameObject.Find("p4").transform;
-        //pointE = GameObject.Find("p5").transform;
-        //pointF = GameObject.Find("p6").transform;
 
         navMeshAgent = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
         waypoints = new Transform[2] {
             pointA,
             pointB
-            //pointB,
-            //pointC,
-            //pointD,
-            //pointE,
-            //pointF
         };
         currentTarget = 0;
         navMeshAgent.SetDestination(waypoints[currentTarget].position);
@@ -72,6 +67,7 @@ public class AI : MonoBehaviour
         ray = new Ray(transform.position, checkDirection);
         if (Physics.Raycast(ray, out hit, maxDistanceToCheck))
         {
+           
             if (hit.collider.gameObject == player)
             {
                 animator.SetBool("isPlayerVisible", true);
@@ -80,6 +76,7 @@ public class AI : MonoBehaviour
             {
                 animator.SetBool("isPlayerVisible", false);
             }
+            
         }
         else
         {
@@ -97,30 +94,18 @@ public class AI : MonoBehaviour
         //Lastly, we get the distance to the next waypoint target
         distanceFromTarget = Vector3.Distance(waypoints[currentTarget].position, transform.position);
         animator.SetFloat("distanceFromWaypoint", distanceFromTarget);
+        
+        // Draw the Raycast form the enemy
+        Vector3 fwd = transform.TransformDirection(Vector3.forward);
+        //Vector3 fwd = ray.transform.TransformDirection(Vector3.forward);
+        Debug.DrawRay(transform.position, fwd * maxDistanceToCheck, Color.red);
+
         animator.SetInteger("amountOfAmmo",_amountOfAmmo);
     }
     public void SetNextPoint()
     {
         switch (currentTarget)
         {
-            //case 0:
-            //    currentTarget = 5;
-            //    break;
-            //case 1:
-            //    currentTarget = 4;
-            //    break;
-            //case 2:
-            //    currentTarget = 3;
-            //    break;
-            //case 3:
-            //    currentTarget = 2;
-            //    break;
-            //case 4:
-            //    currentTarget = 1;
-            //   break;
-            //case 5:
-            //   currentTarget = 0;
-            //    break;
             case 0:
                 currentTarget = 1;
                 break;

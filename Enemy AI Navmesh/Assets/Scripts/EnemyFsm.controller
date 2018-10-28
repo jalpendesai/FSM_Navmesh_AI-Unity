@@ -203,7 +203,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
+    m_EventTreshold: 10
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
@@ -239,7 +239,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
+    m_EventTreshold: 10
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
@@ -273,12 +273,12 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: isPlayerVisible
-    m_EventTreshold: 0
   - m_ConditionMode: 4
     m_ConditionEvent: distanceFromPlayer
     m_EventTreshold: 3
+  - m_ConditionMode: 1
+    m_ConditionEvent: isPlayerVisible
+    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: IsOutOfAmmo
     m_EventTreshold: 0
@@ -308,7 +308,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 10
+    m_EventTreshold: 20
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
@@ -333,9 +333,12 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 4
+  - m_ConditionMode: 3
     m_ConditionEvent: distanceFromPlayer
     m_EventTreshold: 10
+  - m_ConditionMode: 4
+    m_ConditionEvent: distanceFromPlayer
+    m_EventTreshold: 20
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
@@ -345,9 +348,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 3
     m_ConditionEvent: amountOfAmmo
     m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102746290537851772}
   m_Solo: 0
@@ -437,10 +437,10 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 10
+    m_EventTreshold: 20
   - m_ConditionMode: 3
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
+    m_EventTreshold: 10
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
@@ -566,10 +566,10 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
+    m_EventTreshold: 10
   - m_ConditionMode: 4
     m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 10
+    m_EventTreshold: 20
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
@@ -597,6 +597,9 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 4
+    m_ConditionEvent: distanceFromPlayer
+    m_EventTreshold: 5
   - m_ConditionMode: 6
     m_ConditionEvent: amountOfAmmo
     m_EventTreshold: 0
@@ -606,9 +609,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
-  - m_ConditionMode: 4
-    m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102677611755558422}
   m_Solo: 0
@@ -705,6 +705,9 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: distanceFromPlayer
+    m_EventTreshold: 3
   - m_ConditionMode: 4
     m_ConditionEvent: amountOfAmmo
     m_EventTreshold: 0
@@ -714,9 +717,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102798717690717926}
   m_Solo: 0
@@ -804,15 +804,15 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: distanceFromPlayer
+    m_EventTreshold: 5
   - m_ConditionMode: 2
     m_ConditionEvent: isPlayerVisible
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: IsOutOfAmmo
     m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: distanceFromPlayer
-    m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102800591812719814}
   m_Solo: 0
@@ -834,7 +834,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: MovingToWayPoint
-  m_Speed: 10
+  m_Speed: 5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101784891079743450}
@@ -861,7 +861,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: FindingNewWaypoint
-  m_Speed: 10
+  m_Speed: 5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101231764508124200}
@@ -1001,7 +1001,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: PatrolEntry
-  m_Speed: 10
+  m_Speed: 5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101745628214074686}
