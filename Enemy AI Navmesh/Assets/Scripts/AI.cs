@@ -8,18 +8,23 @@ public class AI : MonoBehaviour
     private float maxDistanceToCheck = 15.0f;
     private float currentDistance;
     private Vector3 checkDirection;
+    private Vector3 enemyVision;
     private int currentTarget;
     private float distanceFromTarget;
     private Transform[] waypoints = null;
     private Ray ray;
     private RaycastHit hit;
     private  int _amountOfAmmo = 10;
+    private bool playerinSight = false;
 
     // Patrol state variables
+    public float _angle;
+    public float _fieldOfVision = 45;
     public Transform pointA;
     public Transform pointB;
     public Transform bullet;
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
+    public GameObject head;
 
     public int AmountOfAmmo
     {
@@ -64,26 +69,46 @@ public class AI : MonoBehaviour
 
         //Then we check for visibility
         checkDirection = player.transform.position - transform.position;
-        ray = new Ray(transform.position, checkDirection);
-        if (Physics.Raycast(ray, out hit, maxDistanceToCheck))
+        ////////////////////////////////////////////////////////////////////////////////
+        enemyVision = transform.TransformDirection(Vector3.forward);
+
+        _angle = Vector3.Angle(checkDirection, enemyVision);
+        if(_angle < _fieldOfVision)
         {
-           
-            if (hit.collider.gameObject == player)
+            if(Physics.Raycast(transform.position + transform.up, checkDirection.normalized,out hit, maxDistanceToCheck))
             {
-                animator.SetBool("isPlayerVisible", true);
+                if(hit.collider.gameObject == player)
+                {
+                    animator.SetBool("isPlayerVisible", true);
+                }
+                else
+                {
+                    animator.SetBool("isPlayerVisible", false);
+                }
             }
-            else
-            {
-                animator.SetBool("isPlayerVisible", false);
-            }
-            
-        }
-        else
-        {
-            animator.SetBool("isPlayerVisible", false);
         }
 
-        if(_amountOfAmmo <= 0)
+        //ray = new Ray(transform.position, checkDirection);
+        //if (Physics.Raycast(ray, out hit, maxDistanceToCheck))
+        //{
+
+        //    if (hit.collider.gameObject == player)
+        //    {
+        //        animator.SetBool("isPlayerVisible", true);
+        //    }
+        //    else
+        //    {
+        //        animator.SetBool("isPlayerVisible", false);
+        //    }
+
+        //}
+
+        //else
+        //{
+        //    animator.SetBool("isPlayerVisible", false);
+        //}
+
+        if (_amountOfAmmo <= 0)
         {
             animator.SetBool("IsOutOfAmmo", true);
         }
@@ -96,11 +121,50 @@ public class AI : MonoBehaviour
         animator.SetFloat("distanceFromWaypoint", distanceFromTarget);
         
         // Draw the Raycast form the enemy
-        Vector3 fwd = transform.TransformDirection(Vector3.forward);
-        //Vector3 fwd = ray.transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(transform.position, fwd * maxDistanceToCheck, Color.red);
+        // Vector3 fwd = transform.TransformDirection(Vector3.forward);
+        // Vector3 fwd = ray.transform.TransformDirection(Vector3.forward);
+        //Debug.DrawRay(transform.position + transform.up, enemyVision * maxDistanceToCheck, Color.red);
+
+
+      //  Debug.DrawRay(transform.position, , Color.blue);
 
         animator.SetInteger("amountOfAmmo",_amountOfAmmo);
+
+        // Debug.DrawLine(transform.position, playerTransform.position, Color.red);
+
+        // Vector3 frontRayPoint = transform.position + (transform.forward * maxDistanceToCheck);
+        //Vector3 frontRayPoint = transform.position + (enemyVision * maxDistanceToCheck);
+
+        ////Approximate perspective visualization
+        //Vector3 leftRayPoint = frontRayPoint;
+        //leftRayPoint.x += 25 * 0.5f;
+
+        //Vector3 rightRayPoint = frontRayPoint;
+        //rightRayPoint.x -= 25 * 0.5f;
+
+        //Debug.DrawLine(transform.position + transform.up, frontRayPoint, Color.red);
+        //Debug.DrawLine(transform.position + transform.up, leftRayPoint, Color.green);
+        //Debug.DrawLine(transform.position + transform.up, rightRayPoint, Color.green);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Debug.DrawLine(transform.position, playerTransform.position, Color.red);
+
+        // Vector3 frontRayPoint = transform.position + (transform.forward * maxDistanceToCheck);
+        Vector3 frontRayPoint = transform.position + (enemyVision * maxDistanceToCheck);
+
+        //Approximate perspective visualization
+        Vector3 leftRayPoint = frontRayPoint;
+        leftRayPoint.x += 25 * 0.5f;
+
+        Vector3 rightRayPoint = frontRayPoint;
+        rightRayPoint.x -= 25 * 0.5f;
+
+        Debug.DrawLine(transform.position + transform.up, frontRayPoint, Color.red);
+        Debug.DrawLine(transform.position + transform.up, leftRayPoint, Color.green);
+        Debug.DrawLine(transform.position + transform.up, rightRayPoint, Color.green);
+
     }
     public void SetNextPoint()
     {
@@ -125,4 +189,25 @@ public class AI : MonoBehaviour
         navMeshAgent.isStopped = true;
         transform.Rotate(Vector3.right * Time.deltaTime);
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Door")
+        {
+            // Rotate head left- right
+            animator.SetTrigger("door");
+            Debug.Log("Door Triggered");
+        }
+    }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Door")
+    //    {
+    //        // Rotate head left- right
+    //        animator.SetTrigger("door");
+    //        Debug.Log("Door Triggered");
+    //    }
+    //}
 }
