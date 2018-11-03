@@ -8,6 +8,8 @@ public class EnemyChaseState : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         AI ai = animator.gameObject.GetComponent<AI>();
         ai.ChasePlayer();
+        Material newMat = Resources.Load("Chase", typeof(Material)) as Material;
+        animator.gameObject.GetComponent<Renderer>().material = newMat;
     }
 
 	// OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
@@ -18,7 +20,8 @@ public class EnemyChaseState : StateMachineBehaviour {
 
 	// OnStateExit is called before OnStateExit is called on any state inside this state machine
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-
+        Material newMat = Resources.Load("Patrol", typeof(Material)) as Material;
+        animator.gameObject.GetComponent<Renderer>().material = newMat;
     }
 
 	// OnStateMove is called before OnStateMove is called on any state inside this state machine

@@ -8,6 +8,8 @@ public class EnemyPatrolState : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         AI ai = animator.gameObject.GetComponent<AI>();
         ai.SetNextPoint();
+        Material newMat = Resources.Load("Patrol", typeof(Material)) as Material;
+        animator.gameObject.GetComponent<Renderer>().material = newMat;
     }
 
 	// OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine

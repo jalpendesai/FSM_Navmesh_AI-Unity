@@ -16,6 +16,9 @@ public class AI : MonoBehaviour
     private RaycastHit hit;
     private  int _amountOfAmmo = 10;
     private bool playerinSight = false;
+    private bool turnleft = true;
+    private float headAngle = 0;
+    private Material newMat;
 
     // Patrol state variables
     public float _angle;
@@ -49,8 +52,10 @@ public class AI : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         animator = gameObject.GetComponent<Animator>();
-        pointA = GameObject.Find("p1").transform;
-        pointB = GameObject.Find("p2").transform;
+        //pointA = gameObject.transform.position;
+        //pointB = gameObject.transform.position;
+        //pointA = GameObject.Find("p1").transform;
+        //pointB = GameObject.Find("p2").transform;
 
         navMeshAgent = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
         waypoints = new Transform[2] {
@@ -59,10 +64,15 @@ public class AI : MonoBehaviour
         };
         currentTarget = 0;
         navMeshAgent.SetDestination(waypoints[currentTarget].position);
+        newMat = Resources.Load("Patrol", typeof(Material)) as Material;
+        animator.gameObject.GetComponent<Renderer>().material = newMat;
+        //if (navMeshAgent.agentTypeID == 0) navMeshAgent.SetAreaCost(3, 1000);
+        //if (navMeshAgent.agentTypeID == 0) navMeshAgent.SetAreaCost(3, 1000);
     }
 
     private void Update()
     {
+        
         //First we check distance from the player 
         currentDistance = Vector3.Distance(player.transform.position, transform.position);
         animator.SetFloat("distanceFromPlayer", currentDistance);
@@ -88,25 +98,25 @@ public class AI : MonoBehaviour
             }
         }
 
-        //ray = new Ray(transform.position, checkDirection);
-        //if (Physics.Raycast(ray, out hit, maxDistanceToCheck))
-        //{
+        ray = new Ray(transform.position, checkDirection);
+        if (Physics.Raycast(ray, out hit, maxDistanceToCheck))
+        {
 
-        //    if (hit.collider.gameObject == player)
-        //    {
-        //        animator.SetBool("isPlayerVisible", true);
-        //    }
-        //    else
-        //    {
-        //        animator.SetBool("isPlayerVisible", false);
-        //    }
+            if (hit.collider.gameObject == player)
+            {
+                animator.SetBool("isPlayerVisible", true);
+            }
+            else
+            {
+                animator.SetBool("isPlayerVisible", false);
+            }
 
-        //}
+        }
 
-        //else
-        //{
-        //    animator.SetBool("isPlayerVisible", false);
-        //}
+        else
+        {
+            animator.SetBool("isPlayerVisible", false);
+        }
 
         if (_amountOfAmmo <= 0)
         {
@@ -129,6 +139,7 @@ public class AI : MonoBehaviour
       //  Debug.DrawRay(transform.position, , Color.blue);
 
         animator.SetInteger("amountOfAmmo",_amountOfAmmo);
+        head.transform.rotation = Quaternion.Euler(0, headAngle, 0);
 
         // Debug.DrawLine(transform.position, playerTransform.position, Color.red);
 
@@ -190,24 +201,44 @@ public class AI : MonoBehaviour
         transform.Rotate(Vector3.right * Time.deltaTime);
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Door")
         {
-            // Rotate head left- right
-            animator.SetTrigger("door");
-            Debug.Log("Door Triggered");
+            if (turnleft)
+            {
+                headAngle -= 90;
+                turnleft = false;
+            }
+            else if(!turnleft)
+            {
+                headAngle += 180;
+                turnleft = true;
+            }
+            
+            //else
+            //{
+            //    headAngle += 90;
+            //}
+            //if (headAngle > 30) turnleft = true;
+            //if (headAngle < -30) turnleft = false;
         }
     }
-
-    //private void OnCollisionEnter(Collision collision)
+    //private void OnTriggerEnter(Collider other)
     //{
-    //    if (collision.gameObject.tag == "Door")
+    //    if(other.gameObject.tag == "Door")
     //    {
-    //        // Rotate head left- right
-    //        animator.SetTrigger("door");
-    //        Debug.Log("Door Triggered");
+    //        if (turnleft)
+    //        {
+    //            headAngle--;
+    //        }
+    //        else
+    //        {
+    //            headAngle++;
+    //        }
+    //        if (headAngle > 30) turnleft = true;
+    //        if (headAngle < -30) turnleft = false;
     //    }
     //}
+
 }

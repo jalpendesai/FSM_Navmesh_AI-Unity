@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class doorScript : MonoBehaviour {
 
+    // AI ai;
     GameObject player;
     Vector3 doorClose;
     Vector3 doorOpen = new Vector3(0, 3, 0);
@@ -18,6 +19,10 @@ public class doorScript : MonoBehaviour {
     {
         if(other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy")
         {
+            //if(other.gameObject.tag == "Enemy")
+            //{
+            //    ai.rotateHead();
+            //}
             Debug.Log("Collision Detected");
             
             transform.position += doorOpen;
